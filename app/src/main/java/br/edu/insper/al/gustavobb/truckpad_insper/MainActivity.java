@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setupSideBar();
         setSupportActionBar(toolbar);
         setupSpinners();
+
 
 
 
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         return true;
     }
 
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.actionSideBar:
-                drawer.openDrawer(Gravity.LEFT);
+                drawer.openDrawer(Gravity.RIGHT);
         }
         return true;
     }
