@@ -17,7 +17,7 @@ public class LauncherActivity extends AppCompatActivity {
             public void run() {
                 startApp();
             }
-        }, 2500);
+        }, 2000);
 
     }
 
