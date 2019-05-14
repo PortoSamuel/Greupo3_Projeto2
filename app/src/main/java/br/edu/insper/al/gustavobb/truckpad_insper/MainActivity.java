@@ -1,5 +1,7 @@
 package br.edu.insper.al.gustavobb.truckpad_insper;
 
+import android.os.StrictMode;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
+    private TextInputEditText textOrigin, textDestiny;
+    private GeoCoding addresses = new GeoCoding();
+
 
 
 
@@ -34,18 +39,29 @@ public class MainActivity extends AppCompatActivity {
         spinnerTruckLoad = findViewById(R.id.spinnerTruckLoad);
         spinnerAxleNumbers = findViewById(R.id.spinnerAxleNumbers);
         spinnerReturnLoad = findViewById(R.id.spinnerReturnLoad);
+        textOrigin = findViewById(R.id.editTextOrigin);
+        textDestiny = findViewById(R.id.editTextDestiny);
 
 
         setupSideBar();
         setSupportActionBar(toolbar);
         setupSpinners();
 
+        textOrigin.setOnClickListener((view) -> {
+            addresses.setAddress(getOrigin());
+            try{ addresses.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+        });
 
-
-
-
+        textDestiny.setOnClickListener((view) -> {
+            addresses.setAddress(getDestiny());
+            try{ addresses.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+        });
 
     }
+
+    public String getOrigin(){ return textOrigin.getText().toString(); }
+
+    public String getDestiny(){ return textDestiny.getText().toString(); }
 
     private void setupSpinners(){
         //Truckload
