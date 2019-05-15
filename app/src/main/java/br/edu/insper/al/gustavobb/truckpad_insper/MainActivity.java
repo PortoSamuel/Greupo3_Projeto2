@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -23,10 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
     private TextInputEditText textOrigin, textDestiny;
-    private GeoCoding addresses = new GeoCoding();
-
-
-
+    private Button validateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         spinnerReturnLoad = findViewById(R.id.spinnerReturnLoad);
         textOrigin = findViewById(R.id.editTextOrigin);
         textDestiny = findViewById(R.id.editTextDestiny);
+        validateButton = findViewById(R.id.buttonValidate);
 
 
         setupSideBar();
@@ -48,13 +47,19 @@ public class MainActivity extends AppCompatActivity {
         setupSpinners();
 
         textOrigin.setOnClickListener((view) -> {
-            addresses.setAddress(getOrigin());
-            try{ addresses.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+            if(getOrigin().length() != 0){
+                GeoCodingOrigin addressesOrigin = new GeoCodingOrigin();
+                addressesOrigin.setAddressOrigin(getOrigin());
+                try{ addressesOrigin.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+            }
         });
 
         textDestiny.setOnClickListener((view) -> {
-            addresses.setAddress(getDestiny());
-            try{ addresses.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+            if(getDestiny().length() != 0){
+                GeoCodingDestiny addressDestiny = new GeoCodingDestiny();
+                addressDestiny.setAddressDestiny(getDestiny());
+                try{ addressDestiny.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+            }
         });
 
     }
