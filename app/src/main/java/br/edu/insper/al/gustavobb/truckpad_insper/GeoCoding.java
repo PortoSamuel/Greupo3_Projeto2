@@ -7,7 +7,7 @@ public class GeoCoding {
     private String provider;
 
     public List<GeoCodingLocation> getPlaces() {
-        return places;
+        return this.places;
     }
 }
 
