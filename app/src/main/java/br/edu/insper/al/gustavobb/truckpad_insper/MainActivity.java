@@ -48,17 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         textOrigin.setOnClickListener((view) -> {
             if(getOrigin().length() != 0){
-                GeoCodingOrigin addressesOrigin = new GeoCodingOrigin();
-                addressesOrigin.setAddressOrigin(getOrigin());
-                try{ addressesOrigin.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+                GeoCodingClient client = new GeoCodingClient();
+                client.getApiResponse(getOrigin());
             }
         });
 
         textDestiny.setOnClickListener((view) -> {
             if(getDestiny().length() != 0){
-                GeoCodingDestiny addressDestiny = new GeoCodingDestiny();
-                addressDestiny.setAddressDestiny(getDestiny());
-                try{ addressDestiny.execute(); }catch (Exception exception){ System.out.println(exception.getMessage()); }
+                GeoCodingClient client = new GeoCodingClient();
+                client.getApiResponse(getDestiny());
             }
         });
 

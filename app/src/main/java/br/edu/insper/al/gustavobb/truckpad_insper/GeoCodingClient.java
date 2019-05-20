@@ -18,14 +18,14 @@ public class GeoCodingClient {
         client = retrofit.create(GeoCodingInterface.class);
     }
 
-    public void getAddresses(String address){
+    public void getApiResponse(String address){
         Call<GeoCoding> call = client.getGeoAPI(address);
 
         call.enqueue(new Callback<GeoCoding>() {
             @Override
             public void onResponse(Call<GeoCoding> call, Response<GeoCoding> response) {
                 GeoCoding geoCoding = response.body();
-                System.out.println(geoCoding.getPlaces().get(0).getAddress());
+                System.out.println(geoCoding.getPlaces().get(0).getCity());
 
 
             }
