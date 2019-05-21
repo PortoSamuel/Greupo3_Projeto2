@@ -4,20 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GeoPlace {
-    private String country = "Brasil";
-    private String state_acronym = "SP";
-    private String state = "São Paulo";
-    private String postal_code = "04546-000";
-    private String city = "São Paulo";
-    private String neighborhood = "Itaim Bibi";
-    private String address = "Rua Fidêncio Ramos";
-    private String number = "302";
-    private String display_name = "Rua Fidêncio Ramos 302, Itaim Bibi, São Paulo - SP";
-    private List<Double> point = new LinkedList<>();
+    private String country;
+    private String state_acronym;
+    private String state;
+    private String postal_code;
+    private String city;
+    private String neighborhood;
+    private String address;
+    private String number;
+    private String display_name;
+    private List<Double> point;
 
-    public void putPoint(double number){
-        this.point.add(number);
-    }
 
     public void setCountry(String country) {
         this.country = country;
