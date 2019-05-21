@@ -19,19 +19,19 @@ public class GeoCodingClient {
     }
 
     public void getApiResponse(String address){
-        Call<GeoCoding> call = client.getGeoAPI(address);
+        Call<GeoCodingReceived> call = client.getGeoCoding(address);
 
-        call.enqueue(new Callback<GeoCoding>() {
+        call.enqueue(new Callback<GeoCodingReceived>() {
             @Override
-            public void onResponse(Call<GeoCoding> call, Response<GeoCoding> response) {
-                GeoCoding geoCoding = response.body();
+            public void onResponse(Call<GeoCodingReceived> call, Response<GeoCodingReceived> response) {
+                GeoCodingReceived geoCoding = response.body();
                 System.out.println(geoCoding.getPlaces().get(0).getCity());
 
 
             }
 
             @Override
-            public void onFailure(Call<GeoCoding> call, Throwable t) {
+            public void onFailure(Call<GeoCodingReceived> call, Throwable t) {
 
             }
         });
