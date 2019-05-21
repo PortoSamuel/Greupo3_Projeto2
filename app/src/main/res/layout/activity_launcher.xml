@@ -4,14 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LauncherActivity">
+    tools:context=".LauncherActivity"
+    android:background="@color/colorSideBar">
 
-    <TextView
-        android:id="@+id/splashLogo"
+    <ImageView
+        android:id="@+id/truckpadLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logotipo"
-        android:textSize="40sp"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:src="@drawable/truck_logo"
+        />
+
+    <ImageView
+        android:id="@+id/insperLogo"
+        android:layout_below="@+id/truckpadLogo"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/insper_logo" />
+
+
 </RelativeLayout>
