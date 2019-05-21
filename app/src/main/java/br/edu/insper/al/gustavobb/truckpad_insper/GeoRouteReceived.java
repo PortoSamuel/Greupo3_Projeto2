@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GeoRouteReceived {
     private List<GeoPoint> points;
-    private int distance;
+    private double distance;
     private String distance_unit;
     private int duration;
     private String duration_unit;
@@ -25,7 +25,7 @@ public class GeoRouteReceived {
         return points;
     }
 
-    public int getDistance() {
+    public double getDistance() {
         return distance;
     }
 

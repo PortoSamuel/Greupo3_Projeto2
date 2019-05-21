@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
     private TextInputEditText textOrigin, textDestiny;
     private Button validateButton;
+    private GeoCodingInterface geoInterface;
+    private GeoCodingClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         textDestiny = findViewById(R.id.editTextDestiny);
         validateButton = findViewById(R.id.buttonValidate);
 
+        client = new GeoCodingClient();
 
         setupSideBar();
         setSupportActionBar(toolbar);
@@ -48,17 +51,23 @@ public class MainActivity extends AppCompatActivity {
 
         textOrigin.setOnClickListener((view) -> {
             if(getOrigin().length() != 0){
-                GeoCodingClient client = new GeoCodingClient();
-                client.getApiResponse(getOrigin());
+                client.getAddress(getOrigin());
             }
         });
 
         textDestiny.setOnClickListener((view) -> {
             if(getDestiny().length() != 0){
-                GeoCodingClient client = new GeoCodingClient();
-                client.getApiResponse(getDestiny());
+                client.getAddress(getDestiny());
             }
         });
+
+        validateButton.setOnClickListener((view) -> {
+            System.out.println(getAxleNumbers());
+            System.out.println(getTruckLoad());
+            System.out.println(getReturnLoad());
+            client.postAddress();
+        });
+
 
     }
 
@@ -109,6 +118,19 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public String getTruckLoad() {
+        return spinnerTruckLoad.getSelectedItem().toString();
+    }
 
+    public int getAxleNumbers() {
+        return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString());
+    }
 
+    public boolean getReturnLoad() {
+        if(spinnerReturnLoad.getSelectedItem().toString().equals("Sim")){
+            return  true;
+        }else{
+            return false;
+        }
+    }
 }
