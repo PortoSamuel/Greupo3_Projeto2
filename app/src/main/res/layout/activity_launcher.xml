@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/truckpadLogo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200sp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/truck_logo"
@@ -22,7 +22,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100sp"
         android:src="@drawable/insper_logo"
         android:scaleType="fitCenter"/>
 
