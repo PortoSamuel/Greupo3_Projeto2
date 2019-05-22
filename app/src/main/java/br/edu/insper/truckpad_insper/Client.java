@@ -1,10 +1,7 @@
-package br.edu.insper.al.gustavobb.truckpad_insper;
+package br.edu.insper.truckpad_insper;
 
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;

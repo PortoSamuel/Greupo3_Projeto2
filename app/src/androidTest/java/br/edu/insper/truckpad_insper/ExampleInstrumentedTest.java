@@ -1,4 +1,4 @@
-package br.edu.insper.al.gustavobb.truckpad_insper;
+package br.edu.insper.truckpad_insper;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("br.edu.insper.al.gustavobb.truckpad_insper", appContext.getPackageName());
+        assertEquals("br.edu.insper.truckpad_insper", appContext.getPackageName());
     }
 }
