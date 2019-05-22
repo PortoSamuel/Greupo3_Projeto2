@@ -1,19 +1,27 @@
 package br.edu.insper.al.gustavobb.truckpad_insper;
 
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Client {
+public class Client extends AppCompatActivity {
     private GeoPlace place;
     private GeoCodingReceived codeReceived;
     private GeoCodingPayload payload = new GeoCodingPayload();
     private GeoRouteReceived routeReceived;
     private int axisNumber;
-    private boolean isReturn;
+    private boolean isReturn, originPlaced, destinyPlaced, originCompleted, destinyCompleted;
     private String loadType;
+    private String[] originPlaces, destinyPlaces;
+    private TextView textResult;
 
     Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl("https://geo.api.truckpad.io/v1/")
@@ -22,6 +30,90 @@ public class Client {
     Retrofit retrofit = builder.build();
 
     GeoCodingInterface client = retrofit.create(GeoCodingInterface.class);
+    MainActivity main = new MainActivity();
+
+
+
+
+
+    public void getAddress(String address){
+        Call<GeoCodingReceived> call = client.getGeoCoding(address);
+
+        call.enqueue(new Callback<GeoCodingReceived>() {
+            @Override
+            public void onResponse(Call<GeoCodingReceived> call, Response<GeoCodingReceived> response) {
+                codeReceived = response.body();
+                if(originPlaced == true){
+                    try {
+                        originPlaces = new String[codeReceived.getPlaces().size()];
+                        for (int i = 0; i < codeReceived.getPlaces().size(); i++) {
+                            originPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name();
+
+                        }
+
+
+                        setOriginPlaced(false);
+                    } catch(Exception e){ }
+                }
+                if(destinyPlaced == true){
+                    try {
+                        destinyPlaces = new String[codeReceived.getPlaces().size()];
+                        for (int i = 0; i < codeReceived.getPlaces().size(); i++) {
+                            destinyPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name();
+
+                        }
+
+                        setDestinyPlaced(false);
+                    } catch(Exception e){ }
+                }
+                if(destinyCompleted == true){
+                    payload.putPlaceDestiny(codeReceived.getPlaces().get(0));
+                    setDestinyCompleted(false);
+                }
+                if(originCompleted == true){
+                    payload.putPlaceOrigin(codeReceived.getPlaces().get(0));
+                    setOriginCompleted(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeoCodingReceived> call, Throwable t) { }
+        });
+    }
+
+    public void postAddress(){
+        System.out.println(payload.getPlaces().get(0).getDisplay_name());
+        System.out.println(payload.getPlaces().get(1).getDisplay_name());
+        Call<GeoRouteReceived> call = client.getGeoRoute(payload);
+
+        call.enqueue(new Callback<GeoRouteReceived>() {
+
+        @Override
+        public void onResponse(Call<GeoRouteReceived> call, Response<GeoRouteReceived> response) {
+            routeReceived = response.body();
+            PriceClient client = ServiceGenerator.createService(PriceClient.class);
+            PriceInformation priceInformation = new PriceInformation(getAxisNumber(), routeReceived.getDistance()/1000, isReturn(), getLoadType().replace("carga ", ""));
+
+            Call<Price> callprice = client.calculatePrice(priceInformation);
+
+            callprice.enqueue(new Callback<Price>() {
+                @Override
+                public void onResponse(Call<Price> call, Response<Price> response) {
+                    double result = response.body().getShipment_value();
+                    main.setTextResult(result);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<Price> call, Throwable t) { }
+            });
+        }
+
+            @Override
+            public void onFailure(Call<GeoRouteReceived> call, Throwable t) { }
+        });
+    }
 
     public int getAxisNumber() { return axisNumber; }
 
@@ -35,49 +127,27 @@ public class Client {
 
     public void setLoadType(String loadType) { this.loadType = loadType; }
 
-    public void getAddress(String address){
-
-        Call<GeoCodingReceived> call = client.getGeoCoding(address);
-
-        call.enqueue(new Callback<GeoCodingReceived>() {
-            @Override
-            public void onResponse(Call<GeoCodingReceived> call, Response<GeoCodingReceived> response) {
-                codeReceived = response.body();
-                place = codeReceived.getPlaces().get(0);
-                payload.putPlace(place);
-            }
-
-            @Override
-            public void onFailure(Call<GeoCodingReceived> call, Throwable t) { }
-        });
+    public String[] getOriginPlaces(){
+        return originPlaces;
     }
 
-    public void postAddress(){
+    public String[] getDestinyPlaces(){
+        return destinyPlaces;
+    }
 
-        Call<GeoRouteReceived> call = client.getGeoRoute(payload);
+    public void setOriginPlaced(boolean b){
+        this.originPlaced = b;
+    }
 
-        call.enqueue(new Callback<GeoRouteReceived>() {
+    public void setDestinyPlaced(boolean b){
+        this.destinyPlaced = b;
+    }
 
-        @Override
-        public void onResponse(Call<GeoRouteReceived> call, Response<GeoRouteReceived> response) {
-            routeReceived = response.body();
-            PriceClient client = ServiceGenerator.createService(PriceClient.class);
+    public void setOriginCompleted(boolean b){
+        this.originCompleted = b;
+    }
 
-            PriceInformation priceInformation = new PriceInformation(getAxisNumber(), routeReceived.getDistance()/1000, isReturn(), getLoadType());
-
-            Call<Price> callprice = client.calculatePrice(priceInformation);
-
-            callprice.enqueue(new Callback<Price>() {
-                @Override
-                public void onResponse(Call<Price> call, Response<Price> response) { System.out.println(response.body().getShipment_value()); }
-
-                @Override
-                public void onFailure(Call<Price> call, Throwable t) { }
-            });
-        }
-
-            @Override
-            public void onFailure(Call<GeoRouteReceived> call, Throwable t) { }
-        });
+    public void setDestinyCompleted(boolean b){
+        this.destinyCompleted = b;
     }
 }

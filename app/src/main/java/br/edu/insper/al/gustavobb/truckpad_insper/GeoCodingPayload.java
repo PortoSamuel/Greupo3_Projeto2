@@ -9,8 +9,26 @@ public class GeoCodingPayload {
     private float fuel_consumption;
     private float fuel_price;
 
-    public void putPlace(GeoPlace place){
-        this.places.add(place);
+    public void putPlaceOrigin(GeoPlace place){
+            this.places.add(place);
+            System.out.println(places);
+
+    }
+
+    public void putPlaceDestiny(GeoPlace place){
+            this.places.add(place);
+            System.out.println(places);
+
+
+    }
+
+    public void deletePlaceOrigin(){
+        this.places.remove(0);
+    }
+
+    public void deletePlaceDestiny(){
+        this.places.remove(1);
+
     }
 
     public List<GeoPlace> getPlaces() { return places; }
