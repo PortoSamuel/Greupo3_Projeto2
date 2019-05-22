@@ -1,6 +1,5 @@
 package br.edu.insper.al.gustavobb.truckpad_insper;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class GeoPlace {
