@@ -13,7 +13,7 @@
         android:layout_height="200sp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/truck_logo"
+        android:src="@drawable/truckpad_logo"
         />
 
     <ImageView
