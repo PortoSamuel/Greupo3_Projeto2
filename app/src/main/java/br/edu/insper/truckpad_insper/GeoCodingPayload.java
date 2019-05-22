@@ -1,4 +1,4 @@
-package br.edu.insper.al.gustavobb.truckpad_insper;
+package br.edu.insper.truckpad_insper;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package br.edu.insper.al.gustavobb.truckpad_insper;
+package br.edu.insper.truckpad_insper;
 
 import org.junit.Test;
 

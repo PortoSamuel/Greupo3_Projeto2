@@ -1,6 +1,5 @@
-package br.edu.insper.al.gustavobb.truckpad_insper;
+package br.edu.insper.truckpad_insper;
 
-import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +11,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
-
-public class About extends AppCompatActivity {
+public class Help extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ListView sideBarListView;
     private DrawerLayout drawer;
@@ -23,9 +20,10 @@ public class About extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_help);
 
-        sideBarListView = findViewById(R.id.sideBarListAbout);
+
+        sideBarListView = findViewById(R.id.sideBarListHelp);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer);
 
@@ -33,12 +31,12 @@ public class About extends AppCompatActivity {
         setupSideBar();
         setSupportActionBar(toolbar);
 
-//        TO DO sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
+//      TO DO  sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
 //            switch (position){
 //                case 0:
-//                    startActivity(new Intent(About.this, MainActivity.class));
-//                case 1:
-//                    startActivity(new Intent(About.this,  Help.class));
+//                    startActivity(new Intent(Help.this, MainActivity.class));
+//                case 2:
+//                    startActivity(new Intent(Help.this, About.class));
 //
 //            }
 //        });
@@ -68,3 +66,4 @@ public class About extends AppCompatActivity {
         return true;
     }
 }
+
