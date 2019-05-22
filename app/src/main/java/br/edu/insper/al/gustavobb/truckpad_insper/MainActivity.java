@@ -1,6 +1,5 @@
 package br.edu.insper.al.gustavobb.truckpad_insper;
 
-import android.os.StrictMode;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setupSideBar() {
-        String[] sideBarOptions = {"Home", "2"};
+        String[] sideBarOptions = {"Home", "Ajuda", "Sobre"};
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sideBarOptions);
         sideBarListView.setAdapter(arrayAdapter);
 
