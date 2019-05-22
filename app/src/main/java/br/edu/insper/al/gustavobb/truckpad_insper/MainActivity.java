@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
     private TextInputEditText textOrigin, textDestiny;
     private Button validateButton;
-    private GeoCodingInterface geoInterface;
-    private GeoCodingClient client;
+    private Client client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         textDestiny = findViewById(R.id.editTextDestiny);
         validateButton = findViewById(R.id.buttonValidate);
 
-        client = new GeoCodingClient();
+        client = new Client();
 
         setupSideBar();
         setSupportActionBar(toolbar);
@@ -61,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         validateButton.setOnClickListener((view) -> {
-            System.out.println(getAxleNumbers());
-            System.out.println(getTruckLoad());
-            System.out.println(getReturnLoad());
+            client.setAxisNumber(getAxleNumbers());
+            client.setLoadType(getTruckLoad());
+            client.setReturn(getReturnLoad());
             client.postAddress();
         });
 
@@ -117,19 +116,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public String getTruckLoad() {
-        return spinnerTruckLoad.getSelectedItem().toString();
-    }
+    public String getTruckLoad() { return spinnerTruckLoad.getSelectedItem().toString().toLowerCase(); }
 
-    public int getAxleNumbers() {
-        return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString());
-    }
+    public int getAxleNumbers() { return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString()); }
 
-    public boolean getReturnLoad() {
-        if(spinnerReturnLoad.getSelectedItem().toString().equals("Sim")){
-            return  true;
-        }else{
-            return false;
-        }
-    }
+    public boolean getReturnLoad() { if(spinnerReturnLoad.getSelectedItem().toString().equals("Sim")){ return  true; }else{ return false; } }
 }
