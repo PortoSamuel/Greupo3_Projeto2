@@ -12,6 +12,8 @@ android {
     }
     buildTypes {
         release {
+            buildConfigField("String", "GEO_URL", GEO_API_TRUCKPAD)
+            buildConfigField("String", "PRICE_URL", API_PRICE)
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
