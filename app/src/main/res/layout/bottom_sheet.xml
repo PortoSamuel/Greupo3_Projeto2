@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:id="@+id/bar"
             android:layout_height="80dp"
-            android:background="@color/colorAccent"
+            android:background="@color/colorSideBar"
             android:gravity="center"
             android:text="Arraste para cima"
             android:textSize="20sp"
