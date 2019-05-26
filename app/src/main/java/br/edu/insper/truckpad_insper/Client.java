@@ -1,6 +1,7 @@
 package br.edu.insper.truckpad_insper;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import retrofit2.Call;
@@ -10,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Client extends AppCompatActivity {
-    private GeoPlace place;
+
     private GeoCodingReceived codeReceived;
     private GeoCodingPayload payload = new GeoCodingPayload();
     private GeoRouteReceived routeReceived;
@@ -18,10 +19,9 @@ public class Client extends AppCompatActivity {
     private boolean isReturn, originPlaced, destinyPlaced, originCompleted, destinyCompleted;
     private String loadType;
     private String[] originPlaces, destinyPlaces;
-    private TextView textResult;
 
     Retrofit.Builder builder = new Retrofit.Builder()
-            .baseUrl(BuildConfig.GEO_URL)
+            .baseUrl("https://geo.api.truckpad.io/v1/")
             .addConverterFactory(GsonConverterFactory.create());
 
     Retrofit retrofit = builder.build();
@@ -96,10 +96,9 @@ public class Client extends AppCompatActivity {
             callprice.enqueue(new Callback<Price>() {
                 @Override
                 public void onResponse(Call<Price> call, Response<Price> response) {
-                    double result = response.body().getShipment_value();
-                    main.setTextResult(result);
-
-
+                    double result = response.body().getShipmentValue();
+                    main.setOnResponsePrice(result, priceInformation.getDistance());
+                    main.setAllState("showResult");
                 }
 
                 @Override

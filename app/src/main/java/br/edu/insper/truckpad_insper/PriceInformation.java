@@ -12,4 +12,9 @@ public class PriceInformation {
         this.has_return_shipment = has_return_shipment;
         this.type = type;
     }
+
+    public int getAxis() { return axis; }
+
+    public double getDistance() { return distance; }
+
 }
