@@ -131,6 +131,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:fitsSystemWindows="true"
-        android:background="@color/colorSideBar" />
+        android:background="@drawable/gradientbar" />
 
 </android.support.v4.widget.DrawerLayout>

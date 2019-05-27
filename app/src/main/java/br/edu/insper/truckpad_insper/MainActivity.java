@@ -1,6 +1,7 @@
 package br.edu.insper.truckpad_insper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -78,15 +79,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupSpinners();
 
-//        TO DO sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
-//            switch (position){
-//
-//                case 1:
-//                    startActivity(new Intent(MainActivity.this, Help.class));
-//                case 2:
-//                    startActivity(new Intent(MainActivity.this, About.class));
-//            }
-//        });
+        sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
+            switch (position){
+                case 0:
+                    drawer.closeDrawers();
+                    break;
+                case 1:
+                    startActivity(new Intent(MainActivity.this, HelpActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                    break;
+
+            }
+        });
+
         textOrigin.setOnClickListener((view) -> {
             if(getOrigin().length() != 0){
                 client.setOriginCompleted(true);

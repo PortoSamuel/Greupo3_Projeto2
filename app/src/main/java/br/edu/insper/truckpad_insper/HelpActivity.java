@@ -1,5 +1,6 @@
 package br.edu.insper.truckpad_insper;
 
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class Help extends AppCompatActivity {
+public class HelpActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ListView sideBarListView;
     private DrawerLayout drawer;
@@ -30,16 +31,20 @@ public class Help extends AppCompatActivity {
 
         setupSideBar();
         setSupportActionBar(toolbar);
+        sideBarListView.setOnItemClickListener((parent, view, position, id) ->{
+            switch (position){
+                case 0:
+                    startActivity(new Intent(HelpActivity.this, MainActivity.class));
+                    break;
+                case 1:
+                    drawer.closeDrawers();
+                    break;
+                case 2:
+                    startActivity(new Intent(HelpActivity.this, AboutActivity.class));
+                    break;
 
-//      TO DO  sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
-//            switch (position){
-//                case 0:
-//                    startActivity(new Intent(Help.this, MainActivity.class));
-//                case 2:
-//                    startActivity(new Intent(Help.this, About.class));
-//
-//            }
-//        });
+            }
+        });
     }
 
 

@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".MainActivity" />
+        <activity android:name=".HelpActivity" />
+        <activity android:name=".AboutActivity" />
         <activity
             android:name=".LauncherActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar">
