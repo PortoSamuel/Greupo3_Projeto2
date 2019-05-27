@@ -1,6 +1,7 @@
 package br.edu.insper.truckpad_insper;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         childLayoutParams.height = displayMetrics.heightPixels;
         bottomSheet.setLayoutParams(childLayoutParams);
+        bottomSheetBehavior.setPeekHeight(displayMetrics.heightPixels);
         setStateBottomSheet(5);
 
         client = new Client();
@@ -78,15 +81,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupSpinners();
 
-//        TO DO sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
-//            switch (position){
-//
-//                case 1:
-//                    startActivity(new Intent(MainActivity.this, Help.class));
-//                case 2:
-//                    startActivity(new Intent(MainActivity.this, About.class));
-//            }
-//        });
         textOrigin.setOnClickListener((view) -> {
             if(getOrigin().length() != 0){
                 client.setOriginCompleted(true);
@@ -113,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
             setStateBottomSheet(4);
             setAllState("none");
         });
-
 
         textOrigin.addTextChangedListener(new TextWatcher() {
             @Override
