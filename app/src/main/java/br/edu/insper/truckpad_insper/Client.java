@@ -21,7 +21,7 @@ public class Client extends AppCompatActivity {
     private String[] originPlaces, destinyPlaces;
 
     Retrofit.Builder builder = new Retrofit.Builder()
-            .baseUrl("https://geo.api.truckpad.io/v1/")
+            .baseUrl(BuildConfig.GEO_URL)
             .addConverterFactory(GsonConverterFactory.create());
 
     Retrofit retrofit = builder.build();
