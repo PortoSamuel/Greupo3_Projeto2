@@ -9,7 +9,7 @@ public class ServiceGenerator {
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
     private static Retrofit.Builder builder = new Retrofit.Builder()
-            .baseUrl(BuildConfig.PRICE_URL)
+            .baseUrl("https://tictac.api.truckpad.io/v1/")
             .addConverterFactory(GsonConverterFactory.create());
 
     private static Retrofit retrofit = builder.client(httpClient.build()).build();

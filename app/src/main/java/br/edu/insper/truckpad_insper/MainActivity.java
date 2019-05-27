@@ -1,21 +1,26 @@
 package br.edu.insper.truckpad_insper;
 
 import android.content.Context;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,12 +30,15 @@ public class MainActivity extends AppCompatActivity {
     private ListView sideBarListView;
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    private Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
+    private static Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
     private AutoCompleteTextView textOrigin, textDestiny;
     private Button validateButton;
     private Client client;
-    private String result;
-    private TextView textResult;
+    private String result, distance;
+    private static TextView textResult, textValueIntro, textType, textDistance, loadingTxt;
+    private View bottomSheet;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private static ProgressBar pBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +54,23 @@ public class MainActivity extends AppCompatActivity {
         textOrigin = findViewById(R.id.editTextOrigin);
         textDestiny = findViewById(R.id.editTextDestiny);
         validateButton = findViewById(R.id.buttonValidate);
-        textResult = findViewById(R.id.textResult);
 
+        //bottomSheet
+        bottomSheet = findViewById(R.id.bottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        textResult = findViewById(R.id.resultTxt);
+        textType = findViewById(R.id.typeTxt);
+        textDistance = findViewById(R.id.distanceTxt);
+        pBar = findViewById(R.id.pBar);
+        textValueIntro = findViewById(R.id.textIntroduction);
+        loadingTxt = findViewById(R.id.loadingTxt);
 
+        ViewGroup.LayoutParams childLayoutParams = bottomSheet.getLayoutParams();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        childLayoutParams.height = displayMetrics.heightPixels;
+        bottomSheet.setLayoutParams(childLayoutParams);
+        setStateBottomSheet(5);
 
         client = new Client();
 
@@ -88,67 +110,95 @@ public class MainActivity extends AppCompatActivity {
             client.setLoadType(getTruckLoad());
             client.setReturn(getReturnLoad());
             client.postAddress();
-//         TO DO   textResult.setText(result);
-
-
+            setStateBottomSheet(4);
+            setAllState("none");
         });
 
 
         textOrigin.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                setupAutoCompleteOrigin();
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { setupAutoCompleteOrigin(); }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 client.setOriginPlaced(true);
                 String text = textOrigin.getText().toString();
-                try {
-                    client.getAddress(text);
-                } catch(Exception e){ }
-
-
+                try { client.getAddress(text); } catch(Exception e){ }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-
-
-            }
+            public void afterTextChanged(Editable editable) { }
         });
 
         textDestiny.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                setupAutoCompleteDestiny();
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { setupAutoCompleteDestiny(); }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String text = textDestiny.getText().toString();
                 client.setDestinyPlaced(true);
-                try {
-
-                    client.getAddress(text);
-
-                } catch(Exception e){ }
-
+                try { client.getAddress(text); } catch(Exception e){ }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-
-            }
+            public void afterTextChanged(Editable editable) { }
         });
-
     }
 
     public String getOrigin(){ return textOrigin.getText().toString(); }
 
     public String getDestiny(){ return textDestiny.getText().toString(); }
+
+    public String getResult(){ return result; }
+
+    public String getTruckLoad() { return spinnerTruckLoad.getSelectedItem().toString().toLowerCase(); }
+
+    public int getAxleNumbers() { return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString()); }
+
+    public boolean getReturnLoad() { if(spinnerReturnLoad.getSelectedItem().toString().equals("Sim")){ return  true; }else{ return false; } }
+
+    public String getDistance() { return distance; }
+
+    public void setAllState(String state) {
+        if(state == "showResult"){
+
+            //loading
+            pBar.setVisibility(View.GONE);
+            loadingTxt.setVisibility(View.GONE);
+
+            textValueIntro.setVisibility(View.VISIBLE);
+
+            //distance
+            textDistance.setVisibility(View.VISIBLE);
+            textDistance.setText("Distância: " + getDistance() + " km");
+
+            //type
+            textType.setVisibility(View.VISIBLE);
+            textType.setText("Tipo de carga: " + getTruckLoad());
+
+            //result
+            textResult.setVisibility(View.VISIBLE);
+            textResult.setText("Total do frete: " + getResult() + " R$");
+
+        }else{
+            pBar.setVisibility(View.VISIBLE);
+            loadingTxt.setVisibility(View.VISIBLE);
+
+            textDistance.setVisibility(View.GONE);
+            textType.setVisibility(View.GONE);
+            textValueIntro.setVisibility(View.GONE);
+            textResult.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void setOnResponsePrice(double price, double dist) {
+        this.result = String.valueOf(price);
+        this.distance = String.valueOf(dist);
+    }
+
+    public void setStateBottomSheet(int state){ bottomSheetBehavior.setState(state); }
 
     private void setupAutoCompleteOrigin(){
         try {
@@ -190,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
         String[] sideBarOptions = {"Home", "Ajuda", "Sobre"};
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sideBarOptions);
         sideBarListView.setAdapter(arrayAdapter);
-
     }
 
     @Override
@@ -205,26 +254,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.actionSideBar:
                 drawer.openDrawer(Gravity.RIGHT);
-
         }
 
         return true;
     }
-
-
-    public String getTruckLoad() { return spinnerTruckLoad.getSelectedItem().toString().toLowerCase(); }
-
-    public int getAxleNumbers() { return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString()); }
-
-    public boolean getReturnLoad() { if(spinnerReturnLoad.getSelectedItem().toString().equals("Sim")){ return  true; }else{ return false; } }
-
-    public void setTextResult(double result){
-        this.result = String.valueOf(result);
-        System.out.println(this.result);
-
-
-    }
-
-
-
 }
