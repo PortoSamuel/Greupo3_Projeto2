@@ -2,6 +2,7 @@ package br.edu.insper.truckpad_insper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -117,10 +118,21 @@ public class MainActivity extends AppCompatActivity {
             client.setLoadType(getTruckLoad());
             client.setReturn(getReturnLoad());
             client.postAddress();
-            setStateBottomSheet(4);
+            setStateBottomSheet(3);
             setAllState("none");
         });
 
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                findViewById(R.id.arrowDown).setRotation(slideOffset * 180);
+                findViewById(R.id.arrowUp).setRotation(slideOffset * -180);
+            }
+        });
 
         textOrigin.addTextChangedListener(new TextWatcher() {
             @Override
