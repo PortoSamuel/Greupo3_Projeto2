@@ -44,7 +44,6 @@ public class Client extends AppCompatActivity {
                         originPlaces = new String[codeReceived.getPlaces().size()];
                         for (int i = 0; i < codeReceived.getPlaces().size(); i++) {
                             originPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name();
-                            System.out.println(codeReceived.getPlaces().get(i).getDisplay_name());
 
                         }
 
