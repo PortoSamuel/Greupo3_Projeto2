@@ -110,28 +110,13 @@
                 android:hint="Endereço de Destino"
                 android:completionThreshold="3"/>
 
-            <TextView
-                android:id="@+id/textReturnLoad"
-                android:layout_below="@+id/textDestiny"
-                android:layout_marginLeft="20sp"
-                android:layout_marginTop="40sp"
-                android:text="Carga de retorno:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <Spinner
-                android:id="@+id/spinnerReturnLoad"
-                android:layout_below="@+id/editTextDestiny"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20sp"
-                android:layout_marginTop="30sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+
 
             <Button
                 android:id="@+id/buttonValidate"
-                android:layout_below="@id/textReturnLoad"
-                android:layout_marginTop="40sp"
+                android:layout_below="@id/textDestiny"
+                android:layout_marginTop="60sp"
                 android:layout_centerHorizontal="true"
                 android:text="Validar"
                 android:background="@color/colorSideBar"

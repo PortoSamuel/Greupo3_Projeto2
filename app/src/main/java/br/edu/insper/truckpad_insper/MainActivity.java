@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView sideBarListView;
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    private static Spinner spinnerTruckLoad, spinnerAxleNumbers, spinnerReturnLoad;
+    private static Spinner spinnerTruckLoad, spinnerAxleNumbers;
     private AutoCompleteTextView textOrigin, textDestiny;
     private Button validateButton;
     private Client client;
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer);
         spinnerTruckLoad = findViewById(R.id.spinnerTruckLoad);
         spinnerAxleNumbers = findViewById(R.id.spinnerAxleNumbers);
-        spinnerReturnLoad = findViewById(R.id.spinnerReturnLoad);
         textOrigin = findViewById(R.id.editTextOrigin);
         textDestiny = findViewById(R.id.editTextDestiny);
         validateButton = findViewById(R.id.buttonValidate);
@@ -140,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             if(getDestiny().length() != 0 && getOrigin().length() != 0) {
                 client.setAxisNumber(getAxleNumbers());
                 client.setLoadType(getTruckLoad());
-                client.setReturn(getReturnLoad());
                 client.postAddress();
                 setStateBottomSheet(3);
                 setAllState("none");
@@ -231,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
     public int getAxleNumbers() { return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString()); }
 
-    public boolean getReturnLoad() { if(spinnerReturnLoad.getSelectedItem().toString().equals("Sim")){ return  true; }else{ return false; } }
 
     public String getDistance() { return distance; }
 
@@ -339,10 +336,6 @@ public class MainActivity extends AppCompatActivity {
         axleNumbersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAxleNumbers.setAdapter(axleNumbersAdapter);
 
-        //ReturnLoad
-        ArrayAdapter<CharSequence> returnLoadAdapter = ArrayAdapter.createFromResource(this, R.array.returnLoad, android.R.layout.simple_spinner_item);
-        returnLoadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerReturnLoad.setAdapter(returnLoadAdapter);
     }
 
 

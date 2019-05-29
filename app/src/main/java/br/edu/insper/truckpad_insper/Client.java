@@ -20,7 +20,7 @@ public class Client extends AppCompatActivity {
     private GeoCodingPayload payload = new GeoCodingPayload();
     private GeoRouteReceived routeReceived;
     private int axisNumber;
-    private boolean isReturn, originPlaced, destinyPlaced, originCompleted, destinyCompleted;
+    private boolean originPlaced, destinyPlaced, originCompleted, destinyCompleted;
     private String loadType;
     private String[] originPlaces, destinyPlaces;
 
@@ -111,13 +111,11 @@ public class Client extends AppCompatActivity {
 
     public int getAxisNumber() { return axisNumber; }
 
-    public boolean isReturn() { return isReturn; }
 
     public String getLoadType() { return loadType; }
 
     public void setAxisNumber(int axisNumber) { this.axisNumber = axisNumber; }
 
-    public void setReturn(boolean aReturn) { isReturn = aReturn; }
 
     public void setLoadType(String loadType) { this.loadType = loadType; }
 
