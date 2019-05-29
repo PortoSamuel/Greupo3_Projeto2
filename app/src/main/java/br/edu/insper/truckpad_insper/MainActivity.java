@@ -1,7 +1,9 @@
 package br.edu.insper.truckpad_insper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,9 +28,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private ArrayAdapter<String> arrayAdapter, arrayAdapterOrigin, arrayAdapterDestiny;
     private ListView sideBarListView;
     private Toolbar toolbar;
@@ -91,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     startActivity(new Intent(MainActivity.this, AboutActivity.class));
                     break;
-
             }
         });
 
@@ -100,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 client.setOriginCompleted(true);
                 client.getAddress(getOrigin());
                 textDestiny.requestFocus();
-
-            }
+            }else{showToast("O endereço de origem não pode ser vazio");}
         });
 
         textDestiny.setOnClickListener((view) -> {
@@ -109,17 +114,19 @@ public class MainActivity extends AppCompatActivity {
                 client.setDestinyCompleted(true);
                 client.getAddress(getDestiny());
                 InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
+                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }else{showToast("O endereço de destino não pode ser vazio");}
         });
 
         validateButton.setOnClickListener((view) -> {
-            client.setAxisNumber(getAxleNumbers());
-            client.setLoadType(getTruckLoad());
-            client.setReturn(getReturnLoad());
-            client.postAddress();
-            setStateBottomSheet(3);
-            setAllState("none");
+            if(getDestiny().length() != 0 && getOrigin().length() != 0) {
+                client.setAxisNumber(getAxleNumbers());
+                client.setLoadType(getTruckLoad());
+                client.setReturn(getReturnLoad());
+                client.postAddress();
+                setStateBottomSheet(3);
+                setAllState("none");
+            }
         });
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -179,8 +186,9 @@ public class MainActivity extends AppCompatActivity {
 
     public String getDistance() { return distance; }
 
+    @SuppressLint("SetTextI18n")
     public void setAllState(String state) {
-        if(state == "showResult"){
+        if(state.equals("showResult")){
 
             //loading
             pBar.setVisibility(View.GONE);
@@ -221,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupAutoCompleteOrigin(){
         try {
-            arrayAdapterOrigin = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, client.getOriginPlaces());
+            arrayAdapterOrigin = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, client.getOriginPlaces());
             textOrigin.setAdapter(arrayAdapterOrigin);
 
         } catch(Exception e){ }
@@ -229,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupAutoCompleteDestiny(){
         try {
-            arrayAdapterDestiny = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, client.getDestinyPlaces());
+            arrayAdapterDestiny = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, client.getDestinyPlaces());
             textDestiny.setAdapter(arrayAdapterDestiny);
         } catch(Exception e){ }
     }
@@ -250,8 +258,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> returnLoadAdapter = ArrayAdapter.createFromResource(this, R.array.returnLoad, android.R.layout.simple_spinner_item);
         returnLoadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerReturnLoad.setAdapter(returnLoadAdapter);
-
-
     }
 
 
@@ -273,8 +279,11 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.actionSideBar:
                 drawer.openDrawer(Gravity.RIGHT);
-        }
+        }return true; }
 
-        return true;
+    public void showToast(String text){
+        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
