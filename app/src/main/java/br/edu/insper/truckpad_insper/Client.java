@@ -1,8 +1,12 @@
 package br.edu.insper.truckpad_insper;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,46 +33,41 @@ public class Client extends AppCompatActivity {
     GeoCodingInterface client = retrofit.create(GeoCodingInterface.class);
     MainActivity main = new MainActivity();
 
-
-
-
-
     public void getAddress(String address){
         Call<GeoCodingReceived> call = client.getGeoCoding(address);
         call.enqueue(new Callback<GeoCodingReceived>() {
             @Override
             public void onResponse(Call<GeoCodingReceived> call, Response<GeoCodingReceived> response) {
                 codeReceived = response.body();
-                if(originPlaced == true){
+
+                if(originPlaced){
                     try {
-                        originPlaces = new String[codeReceived.getPlaces().size()];
-                        for (int i = 0; i < codeReceived.getPlaces().size(); i++) {
-                            originPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name();
-
-                        }
-
-
+                        originPlaces = new String[Objects.requireNonNull(codeReceived).getPlaces().size()];
+                        for (int i = 0; i < codeReceived.getPlaces().size(); i++) { originPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name(); }
                         setOriginPlaced(false);
                     } catch(Exception e){ }
                 }
-                if(destinyPlaced == true){
+                if(destinyPlaced){
                     try {
-                        destinyPlaces = new String[codeReceived.getPlaces().size()];
-                        for (int i = 0; i < codeReceived.getPlaces().size(); i++) {
-                            destinyPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name();
-
-                        }
-
+                        destinyPlaces = new String[Objects.requireNonNull(codeReceived).getPlaces().size()];
+                        for (int i = 0; i < codeReceived.getPlaces().size(); i++) { destinyPlaces[i] = codeReceived.getPlaces().get(i).getDisplay_name(); }
                         setDestinyPlaced(false);
                     } catch(Exception e){ }
                 }
-                if(destinyCompleted == true){
-                    payload.putPlaceDestiny(codeReceived.getPlaces().get(0));
-                    setDestinyCompleted(false);
+
+                if(destinyCompleted){
+                    try{
+                        assert codeReceived != null;
+                        payload.putPlaceDestiny(codeReceived.getPlaces().get(0));
+                        setDestinyCompleted(false);
+                    }catch (Exception e){ main.showToast("aaaa"); }
                 }
-                if(originCompleted == true){
-                    payload.putPlaceOrigin(codeReceived.getPlaces().get(0));
-                    setOriginCompleted(false);
+                if(originCompleted){
+                    try{
+                        assert codeReceived != null;
+                        payload.putPlaceOrigin(codeReceived.getPlaces().get(0));
+                        setOriginCompleted(false);
+                    }catch (Exception e){ main.showToast("aaaa"); }
                 }
             }
 
@@ -94,8 +93,8 @@ public class Client extends AppCompatActivity {
 
             callprice.enqueue(new Callback<Price>() {
                 @Override
-                public void onResponse(Call<Price> call, Response<Price> response) {
-                    double result = response.body().getShipmentValue();
+                public void onResponse(Call<Price> call, Response<Price> response){
+                    double result = Objects.requireNonNull(response.body()).getShipmentValue();
                     main.setOnResponsePrice(result, priceInformation.getDistance());
                     main.setAllState("showResult");
                 }
@@ -122,27 +121,15 @@ public class Client extends AppCompatActivity {
 
     public void setLoadType(String loadType) { this.loadType = loadType; }
 
-    public String[] getOriginPlaces(){
-        return originPlaces;
-    }
+    public String[] getOriginPlaces(){ return originPlaces; }
 
-    public String[] getDestinyPlaces(){
-        return destinyPlaces;
-    }
+    public String[] getDestinyPlaces(){ return destinyPlaces; }
 
-    public void setOriginPlaced(boolean b){
-        this.originPlaced = b;
-    }
+    public void setOriginPlaced(boolean b){ this.originPlaced = b; }
 
-    public void setDestinyPlaced(boolean b){
-        this.destinyPlaced = b;
-    }
+    public void setDestinyPlaced(boolean b){ this.destinyPlaced = b; }
 
-    public void setOriginCompleted(boolean b){
-        this.originCompleted = b;
-    }
+    public void setOriginCompleted(boolean b){ this.originCompleted = b; }
 
-    public void setDestinyCompleted(boolean b){
-        this.destinyCompleted = b;
-    }
+    public void setDestinyCompleted(boolean b){ this.destinyCompleted = b; }
 }
