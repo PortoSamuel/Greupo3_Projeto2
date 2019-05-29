@@ -16,6 +16,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Client extends AppCompatActivity {
 
+    Retrofit.Builder builder = new Retrofit.Builder()
+            .baseUrl(BuildConfig.GEO_URL)
+            .addConverterFactory(GsonConverterFactory.create());
+
     private GeoCodingReceived codeReceived;
     private GeoCodingPayload payload = new GeoCodingPayload();
     private GeoRouteReceived routeReceived;
@@ -23,15 +27,13 @@ public class Client extends AppCompatActivity {
     private boolean isReturn, originPlaced, destinyPlaced, originCompleted, destinyCompleted;
     private String loadType;
     private String[] originPlaces, destinyPlaces;
+    private Retrofit retrofit = builder.build();
+    private GeoCodingInterface client = retrofit.create(GeoCodingInterface.class);
+    private MainActivity main;
 
-    Retrofit.Builder builder = new Retrofit.Builder()
-            .baseUrl(BuildConfig.GEO_URL)
-            .addConverterFactory(GsonConverterFactory.create());
-
-    Retrofit retrofit = builder.build();
-
-    GeoCodingInterface client = retrofit.create(GeoCodingInterface.class);
-    MainActivity main = new MainActivity();
+    public Client(MainActivity main){
+        this.main = main;
+    }
 
     public void getAddress(String address){
         Call<GeoCodingReceived> call = client.getGeoCoding(address);
@@ -60,17 +62,16 @@ public class Client extends AppCompatActivity {
                         assert codeReceived != null;
                         payload.putPlaceDestiny(codeReceived.getPlaces().get(0));
                         setDestinyCompleted(false);
-                    }catch (Exception e){ main.showToast("aaaa"); }
+                    }catch (Exception e){ main.showToast("O destino não existe"); }
                 }
                 if(originCompleted){
                     try{
                         assert codeReceived != null;
                         payload.putPlaceOrigin(codeReceived.getPlaces().get(0));
                         setOriginCompleted(false);
-                    }catch (Exception e){ main.showToast("aaaa"); }
+                    }catch (Exception e){ main.showToast("A origem não existe"); }
                 }
             }
-
             @Override
             public void onFailure(Call<GeoCodingReceived> call, Throwable t) { }
         });

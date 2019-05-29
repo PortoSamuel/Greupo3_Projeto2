@@ -71,16 +71,16 @@ public class MainActivity extends AppCompatActivity {
         //bottomSheet
         bottomSheet = findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        textResult = findViewById(R.id.resultText);
-        textResultReturn = findViewById(R.id.resultTextReturn);
-        textResultNumber = findViewById(R.id.resultTextNumber);
-        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
-        textDistance = findViewById(R.id.distanceText);
-        textResultDistance = findViewById(R.id.resultTextDistance);
-        textGas = findViewById(R.id.gasText);
-        textResultGas = findViewById(R.id.resultGas);
-        textToll = findViewById(R.id.tollText);
-        textResultToll = findViewById(R.id.resultToll);
+//        textResult = findViewById(R.id.resultText);
+//        textResultReturn = findViewById(R.id.resultTextReturn);
+//        textResultNumber = findViewById(R.id.resultTextNumber);
+//        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
+//        textDistance = findViewById(R.id.distanceText);
+//        textResultDistance = findViewById(R.id.resultTextDistance);
+//        textGas = findViewById(R.id.gasText);
+//        textResultGas = findViewById(R.id.resultGas);
+//        textToll = findViewById(R.id.tollText);
+//        textResultToll = findViewById(R.id.resultToll);
         pBar = findViewById(R.id.pBar);
         textValueIntro = findViewById(R.id.textIntroduction);
         loadingTxt = findViewById(R.id.loadingTxt);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         bottomSheet.setLayoutParams(childLayoutParams);
         setStateBottomSheet(5);
 
-        client = new Client();
+        client = new Client(this);
         Handler handler = new Handler();
 
 
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 client.postAddress();
                 setStateBottomSheet(3);
                 setAllState("none");
-            }
+            }else{ showToast("Preencha todos os campos"); }
         });
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -266,15 +266,9 @@ public class MainActivity extends AppCompatActivity {
             textResultToll.setVisibility(View.VISIBLE);
             textResultToll.setText("R$ 00,00");
 
-
-//            //type
-//            textType.setVisibility(View.VISIBLE);
-//            textType.setText("Tipo de carga: " + getTruckLoad());
-
             //result
             textResult.setVisibility(View.VISIBLE);
             textResult.setText("Valor sem retorno:");
-
 
             textResultReturn.setVisibility(View.VISIBLE);
             textResultReturn.setText("Valor com retorno:");
@@ -291,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
             loadingTxt.setVisibility(View.VISIBLE);
 
             textDistance.setVisibility(View.GONE);
-//            textType.setVisibility(View.GONE);
             textValueIntro.setVisibility(View.GONE);
             textResult.setVisibility(View.GONE);
         }
@@ -309,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             arrayAdapterOrigin = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, client.getOriginPlaces());
             textOrigin.setAdapter(arrayAdapterOrigin);
-            if(originPerformed == false){
+            if(!originPerformed){
                 textOrigin.showDropDown();
             }
 
@@ -321,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             arrayAdapterDestiny = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, client.getDestinyPlaces());
             textDestiny.setAdapter(arrayAdapterDestiny);
-            if(destinyPerformed == false){
+            if(!destinyPerformed){
                 textDestiny.showDropDown();
             }
         } catch(Exception e){ }
@@ -372,11 +365,7 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void setOriginPerformed(boolean b){
-        this.originPerformed = b;
-    }
+    public void setOriginPerformed(boolean b){ this.originPerformed = b; }
 
-    public void setDestinyPerformed(boolean b){
-        this.destinyPerformed = b;
-    }
+    public void setDestinyPerformed(boolean b){ this.destinyPerformed = b; }
 }
