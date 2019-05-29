@@ -86,7 +86,8 @@
                 android:singleLine="true"
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
-                android:hint="Endereço de Origem" />
+                android:hint="Endereço de Origem"
+                android:completionThreshold="3" />
 
             <TextView
                 android:id="@+id/textDestiny"
@@ -106,7 +107,8 @@
                 android:singleLine="true"
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
-                android:hint="Endereço de Destino" />
+                android:hint="Endereço de Destino"
+                android:completionThreshold="3"/>
 
             <TextView
                 android:id="@+id/textReturnLoad"
