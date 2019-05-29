@@ -2,6 +2,7 @@ package br.edu.insper.truckpad_insper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -37,10 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private Button validateButton;
     private Client client;
     private String result, distance;
-    private static TextView textResult, textValueIntro, textType, textDistance, loadingTxt;
+    private static TextView textResult, textValueIntro, textDistance, loadingTxt, textResultReturn, textResultNumber, textReturnResultNumber, textResultDistance, textGas, textResultGas, textToll, textResultToll;
     private View bottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private static ProgressBar pBar;
+    private boolean originPerformed, destinyPerformed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +64,16 @@ public class MainActivity extends AppCompatActivity {
         //bottomSheet
         bottomSheet = findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        textResult = findViewById(R.id.resultTxt);
-        textType = findViewById(R.id.typeTxt);
-        textDistance = findViewById(R.id.distanceTxt);
+        textResult = findViewById(R.id.resultText);
+        textResultReturn = findViewById(R.id.resultTextReturn);
+        textResultNumber = findViewById(R.id.resultTextNumber);
+        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
+        textDistance = findViewById(R.id.distanceText);
+        textResultDistance = findViewById(R.id.resultTextDistance);
+        textGas = findViewById(R.id.gasText);
+        textResultGas = findViewById(R.id.resultGas);
+        textToll = findViewById(R.id.tollText);
+        textResultToll = findViewById(R.id.resultToll);
         pBar = findViewById(R.id.pBar);
         textValueIntro = findViewById(R.id.textIntroduction);
         loadingTxt = findViewById(R.id.loadingTxt);
@@ -75,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         setStateBottomSheet(5);
 
         client = new Client();
+        Handler handler = new Handler();
+
 
         setupSideBar();
         setSupportActionBar(toolbar);
@@ -100,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 client.setOriginCompleted(true);
                 client.getAddress(getOrigin());
                 textDestiny.requestFocus();
-
+                setOriginPerformed(true);
             }
         });
 
@@ -110,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 client.getAddress(getDestiny());
                 InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                setDestinyPerformed(true);
             }
         });
 
@@ -136,32 +150,63 @@ public class MainActivity extends AppCompatActivity {
 
         textOrigin.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { setupAutoCompleteOrigin(); }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setupAutoCompleteOrigin();
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                client.setOriginPlaced(true);
-                String text = textOrigin.getText().toString();
-                try { client.getAddress(text); } catch(Exception e){ }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setOriginPerformed(false);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        client.setOriginPlaced(true);
+                        String text = textOrigin.getText().toString();
+                        try {
+                            client.getAddress(text);
+                            setupAutoCompleteOrigin();
+                        } catch(Exception e){
+
+                        }
+                    }
+                }, 1200);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+            }
         });
 
         textDestiny.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { setupAutoCompleteDestiny(); }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String text = textDestiny.getText().toString();
-                client.setDestinyPlaced(true);
-                try { client.getAddress(text); } catch(Exception e){ }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setupAutoCompleteDestiny();
             }
 
             @Override
-            public void afterTextChanged(Editable editable) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setDestinyPerformed(false);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        client.setDestinyPlaced(true);
+                        String text = textDestiny.getText().toString();
+                        try {
+                            client.getAddress(text);
+                            setupAutoCompleteDestiny();
+                        } catch(Exception e){ }
+                    }
+                }, 1200);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
     }
 
@@ -190,22 +235,51 @@ public class MainActivity extends AppCompatActivity {
 
             //distance
             textDistance.setVisibility(View.VISIBLE);
-            textDistance.setText("Distância: " + getDistance() + " km");
+            textDistance.setText("     Distância:");
 
-            //type
-            textType.setVisibility(View.VISIBLE);
-            textType.setText("Tipo de carga: " + getTruckLoad());
+            textResultDistance.setVisibility(View.VISIBLE);
+            textResultDistance.setText(getDistance() + " km");
+
+            //gas
+            textGas.setVisibility(View.VISIBLE);
+            textGas.setText("     Combustível");
+
+            textResultGas.setVisibility(View.VISIBLE);
+            textResultGas.setText("R$ 00,00");
+
+            //toll
+            textToll.setVisibility(View.VISIBLE);
+            textToll.setText("     Pedagio:");
+
+            textResultToll.setVisibility(View.VISIBLE);
+            textResultToll.setText("R$ 00,00");
+
+
+//            //type
+//            textType.setVisibility(View.VISIBLE);
+//            textType.setText("Tipo de carga: " + getTruckLoad());
 
             //result
             textResult.setVisibility(View.VISIBLE);
-            textResult.setText("Total do frete: " + getResult() + " R$");
+            textResult.setText("Valor sem retorno:");
+
+
+            textResultReturn.setVisibility(View.VISIBLE);
+            textResultReturn.setText("Valor com retorno:");
+
+            textResultNumber.setVisibility(View.VISIBLE);
+            textResultNumber.setText("R$ " + getResult());
+
+            textReturnResultNumber.setVisibility(View.VISIBLE);
+            textReturnResultNumber.setText("R$ " + getResult());
+
 
         }else{
             pBar.setVisibility(View.VISIBLE);
             loadingTxt.setVisibility(View.VISIBLE);
 
             textDistance.setVisibility(View.GONE);
-            textType.setVisibility(View.GONE);
+//            textType.setVisibility(View.GONE);
             textValueIntro.setVisibility(View.GONE);
             textResult.setVisibility(View.GONE);
         }
@@ -223,6 +297,10 @@ public class MainActivity extends AppCompatActivity {
         try {
             arrayAdapterOrigin = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, client.getOriginPlaces());
             textOrigin.setAdapter(arrayAdapterOrigin);
+            if(originPerformed == false){
+                textOrigin.showDropDown();
+            }
+
 
         } catch(Exception e){ }
     }
@@ -231,6 +309,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             arrayAdapterDestiny = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, client.getDestinyPlaces());
             textDestiny.setAdapter(arrayAdapterDestiny);
+            if(destinyPerformed == false){
+                textDestiny.showDropDown();
+            }
         } catch(Exception e){ }
     }
 
@@ -276,5 +357,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    public void setOriginPerformed(boolean b){
+        this.originPerformed = b;
+    }
+
+    public void setDestinyPerformed(boolean b){
+        this.destinyPerformed = b;
     }
 }

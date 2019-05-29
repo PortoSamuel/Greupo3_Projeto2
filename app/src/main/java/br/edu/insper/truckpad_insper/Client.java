@@ -35,7 +35,6 @@ public class Client extends AppCompatActivity {
 
     public void getAddress(String address){
         Call<GeoCodingReceived> call = client.getGeoCoding(address);
-
         call.enqueue(new Callback<GeoCodingReceived>() {
             @Override
             public void onResponse(Call<GeoCodingReceived> call, Response<GeoCodingReceived> response) {
@@ -89,7 +88,7 @@ public class Client extends AppCompatActivity {
         public void onResponse(Call<GeoRouteReceived> call, Response<GeoRouteReceived> response) {
             routeReceived = response.body();
             PriceClient client = ServiceGenerator.createService(PriceClient.class);
-            PriceInformation priceInformation = new PriceInformation(getAxisNumber(), routeReceived.getDistance()/1000, isReturn(), getLoadType().replace("carga ", ""));
+            PriceInformation priceInformation = new PriceInformation(getAxisNumber(), routeReceived.getDistance()/1000, true, getLoadType().replace("carga ", ""));
 
             Call<Price> callprice = client.calculatePrice(priceInformation);
 
