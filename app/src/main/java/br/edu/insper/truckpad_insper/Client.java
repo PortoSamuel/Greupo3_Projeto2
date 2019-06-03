@@ -80,6 +80,11 @@ public class Client extends AppCompatActivity {
     public void postAddress(){
         System.out.println(payload.getPlaces().get(0).getDisplay_name());
         System.out.println(payload.getPlaces().get(1).getDisplay_name());
+
+        payload.setVehicle_type(1);
+        payload.setFuel_consumption(5);
+        payload.setFuel_price((float) 3.654);
+
         Call<GeoRouteReceived> call = client.getGeoRoute(payload);
 
         call.enqueue(new Callback<GeoRouteReceived>() {
@@ -87,6 +92,7 @@ public class Client extends AppCompatActivity {
         @Override
         public void onResponse(Call<GeoRouteReceived> call, Response<GeoRouteReceived> response) {
             routeReceived = response.body();
+
             PriceClient client = ServiceGenerator.createService(PriceClient.class);
             PriceInformation priceInformation = new PriceInformation(getAxisNumber(), routeReceived.getDistance()/1000, true, getLoadType().replace("carga ", ""));
 
@@ -96,7 +102,9 @@ public class Client extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Price> call, Response<Price> response){
                     double result = Objects.requireNonNull(response.body()).getShipmentValue();
-                    main.setOnResponsePrice(result, priceInformation.getDistance());
+                    double result2 = result/2;
+
+                    main.setOnResponsePrice(result, priceInformation.getDistance(), routeReceived.getFuel_cost(), routeReceived.getToll_cost(),result2);
                     main.setAllState("showResult");
                 }
 
