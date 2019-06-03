@@ -26,7 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Valide o valor do seu frete:"
-                android:layout_marginTop="10sp"
+                android:textColor="@color/cardview_dark_background"
+                android:layout_marginTop="30sp"
                 android:textSize="20sp"/>
 
             <TextView
@@ -35,7 +36,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tipo de carga:"
-                android:layout_marginTop="20sp"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="17sp"
+                android:layout_marginTop="55sp"
                 android:layout_marginLeft="20sp"/>
 
             <Spinner
@@ -44,7 +47,7 @@
                 android:layout_below="@+id/textStart"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20sp"
-                android:layout_marginTop="20sp"
+                android:layout_marginTop="55sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -53,8 +56,10 @@
             <TextView
                 android:id="@+id/textAxleNumbers"
                 android:layout_below="@id/textTruckLoad"
-                android:layout_marginTop="40sp"
+                android:layout_marginTop="55sp"
                 android:layout_marginLeft="20sp"
+                android:textSize="17sp"
+                android:textColor="@color/cardview_dark_background"
                 android:text="Número de eixos:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -64,16 +69,18 @@
                 android:layout_below="@+id/spinnerTruckLoad"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20sp"
-                android:layout_marginTop="40sp"
+                android:layout_marginTop="55sp"
                 android:layout_width="180sp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/textSource"
                 android:layout_below="@id/textAxleNumbers"
-                android:layout_marginTop="40sp"
+                android:layout_marginTop="55sp"
                 android:layout_marginLeft="20sp"
                 android:text="Origem:"
+                android:textSize="17sp"
+                android:textColor="@color/cardview_dark_background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -81,7 +88,7 @@
                 android:id="@+id/editTextOrigin"
                 android:layout_below="@id/spinnerAxleNumbers"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="17sp"
+                android:layout_marginTop="32sp"
                 android:layout_marginRight="20sp"
                 android:singleLine="true"
                 android:layout_width="200sp"
@@ -92,9 +99,11 @@
             <TextView
                 android:id="@+id/textDestiny"
                 android:layout_below="@id/textSource"
-                android:layout_marginTop="40sp"
+                android:layout_marginTop="55sp"
                 android:layout_marginLeft="20sp"
                 android:text="Destino:"
+                android:textSize="17sp"
+                android:textColor="@color/cardview_dark_background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -102,7 +111,7 @@
                 android:id="@+id/editTextDestiny"
                 android:layout_below="@id/editTextOrigin"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="17sp"
+                android:layout_marginTop="32sp"
                 android:layout_marginRight="20sp"
                 android:singleLine="true"
                 android:layout_width="200sp"
@@ -110,13 +119,10 @@
                 android:hint="Endereço de Destino"
                 android:completionThreshold="3"/>
 
-
-
-
             <Button
                 android:id="@+id/buttonValidate"
                 android:layout_below="@id/textDestiny"
-                android:layout_marginTop="60sp"
+                android:layout_marginTop="90sp"
                 android:layout_centerHorizontal="true"
                 android:text="Validar"
                 android:background="@color/colorSideBar"
