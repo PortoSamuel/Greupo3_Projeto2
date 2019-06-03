@@ -70,16 +70,16 @@ public class MainActivity extends AppCompatActivity {
         //bottomSheet
         bottomSheet = findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-//        textResult = findViewById(R.id.resultText);
-//        textResultReturn = findViewById(R.id.resultTextReturn);
-//        textResultNumber = findViewById(R.id.resultTextNumber);
-//        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
-//        textDistance = findViewById(R.id.distanceText);
-//        textResultDistance = findViewById(R.id.resultTextDistance);
-//        textGas = findViewById(R.id.gasText);
-//        textResultGas = findViewById(R.id.resultGas);
-//        textToll = findViewById(R.id.tollText);
-//        textResultToll = findViewById(R.id.resultToll);
+        textResult = findViewById(R.id.resultText);
+        textResultReturn = findViewById(R.id.resultTextReturn);
+        textResultNumber = findViewById(R.id.resultTextNumber);
+        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
+        textDistance = findViewById(R.id.distanceText);
+        textResultDistance = findViewById(R.id.resultTextDistance);
+        textGas = findViewById(R.id.gasText);
+        textResultGas = findViewById(R.id.resultGas);
+        textToll = findViewById(R.id.tollText);
+        textResultToll = findViewById(R.id.resultToll);
         pBar = findViewById(R.id.pBar);
         textValueIntro = findViewById(R.id.textIntroduction);
         loadingTxt = findViewById(R.id.loadingTxt);
