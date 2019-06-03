@@ -1,4 +1,4 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.api.payloads;
 
 import java.util.LinkedList;
 import java.util.List;

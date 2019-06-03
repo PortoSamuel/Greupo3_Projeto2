@@ -1,9 +1,8 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -14,15 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -34,6 +30,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
+
+import br.edu.insper.truckpad_insper.api.client.Client;
+import br.edu.insper.truckpad_insper.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -70,16 +69,16 @@ public class MainActivity extends AppCompatActivity {
         //bottomSheet
         bottomSheet = findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-//        textResult = findViewById(R.id.resultText);
-//        textResultReturn = findViewById(R.id.resultTextReturn);
-//        textResultNumber = findViewById(R.id.resultTextNumber);
-//        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
-//        textDistance = findViewById(R.id.distanceText);
-//        textResultDistance = findViewById(R.id.resultTextDistance);
-//        textGas = findViewById(R.id.gasText);
-//        textResultGas = findViewById(R.id.resultGas);
-//        textToll = findViewById(R.id.tollText);
-//        textResultToll = findViewById(R.id.resultToll);
+        textResult = findViewById(R.id.resultText);
+        textResultReturn = findViewById(R.id.resultTextReturn);
+        textResultNumber = findViewById(R.id.resultTextNumber);
+        textReturnResultNumber = findViewById(R.id.resultReturnTextNumber);
+        textDistance = findViewById(R.id.distanceText);
+        textResultDistance = findViewById(R.id.resultTextDistance);
+        textGas = findViewById(R.id.gasText);
+        textResultGas = findViewById(R.id.resultGas);
+        textToll = findViewById(R.id.tollText);
+        textResultToll = findViewById(R.id.resultToll);
         pBar = findViewById(R.id.pBar);
         textValueIntro = findViewById(R.id.textIntroduction);
         loadingTxt = findViewById(R.id.loadingTxt);

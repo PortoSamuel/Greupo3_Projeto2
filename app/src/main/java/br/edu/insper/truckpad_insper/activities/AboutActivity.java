@@ -1,4 +1,4 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.activities;
 
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +12,10 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class HelpActivity extends AppCompatActivity {
+import br.edu.insper.truckpad_insper.R;
+
+
+public class AboutActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ListView sideBarListView;
     private DrawerLayout drawer;
@@ -21,26 +24,26 @@ public class HelpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
+        setContentView(R.layout.activity_about);
 
-
-        sideBarListView = findViewById(R.id.sideBarListHelp);
+        sideBarListView = findViewById(R.id.sideBarListAbout);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer);
 
 
         setupSideBar();
         setSupportActionBar(toolbar);
-        sideBarListView.setOnItemClickListener((parent, view, position, id) ->{
+
+        sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
             switch (position){
                 case 0:
-                    startActivity(new Intent(HelpActivity.this, MainActivity.class));
+                    startActivity(new Intent(AboutActivity.this, MainActivity.class));
                     break;
                 case 1:
-                    drawer.closeDrawers();
+                    startActivity(new Intent(AboutActivity.this,  HelpActivity.class));
                     break;
                 case 2:
-                    startActivity(new Intent(HelpActivity.this, AboutActivity.class));
+                    drawer.closeDrawers();
                     break;
 
             }
@@ -71,4 +74,3 @@ public class HelpActivity extends AppCompatActivity {
         return true;
     }
 }
-

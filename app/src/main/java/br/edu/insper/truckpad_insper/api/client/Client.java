@@ -1,13 +1,16 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.api.client;
 
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Objects;
 
+import br.edu.insper.truckpad_insper.BuildConfig;
+import br.edu.insper.truckpad_insper.activities.MainActivity;
+import br.edu.insper.truckpad_insper.api.payloads.GeoCodingPayload;
+import br.edu.insper.truckpad_insper.api.payloads.GeoCodingReceived;
+import br.edu.insper.truckpad_insper.api.payloads.GeoRouteReceived;
+import br.edu.insper.truckpad_insper.api.payloads.Price;
+import br.edu.insper.truckpad_insper.api.payloads.PriceInformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

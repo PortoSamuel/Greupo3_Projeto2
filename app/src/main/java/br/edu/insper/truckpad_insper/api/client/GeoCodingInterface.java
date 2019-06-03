@@ -1,5 +1,8 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.api.client;
 
+import br.edu.insper.truckpad_insper.api.payloads.GeoCodingPayload;
+import br.edu.insper.truckpad_insper.api.payloads.GeoCodingReceived;
+import br.edu.insper.truckpad_insper.api.payloads.GeoRouteReceived;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

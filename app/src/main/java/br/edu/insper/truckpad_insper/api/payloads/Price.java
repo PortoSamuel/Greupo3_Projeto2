@@ -1,4 +1,4 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.api.payloads;
 
 public class Price {
 

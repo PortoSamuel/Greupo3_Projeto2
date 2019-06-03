@@ -1,5 +1,6 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.api.client;
 
+import br.edu.insper.truckpad_insper.BuildConfig;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

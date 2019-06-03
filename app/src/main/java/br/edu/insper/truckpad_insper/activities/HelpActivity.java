@@ -1,4 +1,4 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.activities;
 
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
@@ -12,9 +12,9 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import br.edu.insper.truckpad_insper.R;
 
-
-public class AboutActivity extends AppCompatActivity {
+public class HelpActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ListView sideBarListView;
     private DrawerLayout drawer;
@@ -23,26 +23,26 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_help);
 
-        sideBarListView = findViewById(R.id.sideBarListAbout);
+
+        sideBarListView = findViewById(R.id.sideBarListHelp);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer);
 
 
         setupSideBar();
         setSupportActionBar(toolbar);
-
-        sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
+        sideBarListView.setOnItemClickListener((parent, view, position, id) ->{
             switch (position){
                 case 0:
-                    startActivity(new Intent(AboutActivity.this, MainActivity.class));
+                    startActivity(new Intent(HelpActivity.this, MainActivity.class));
                     break;
                 case 1:
-                    startActivity(new Intent(AboutActivity.this,  HelpActivity.class));
+                    drawer.closeDrawers();
                     break;
                 case 2:
-                    drawer.closeDrawers();
+                    startActivity(new Intent(HelpActivity.this, AboutActivity.class));
                     break;
 
             }
@@ -73,3 +73,4 @@ public class AboutActivity extends AppCompatActivity {
         return true;
     }
 }
+

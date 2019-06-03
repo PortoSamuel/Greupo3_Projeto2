@@ -9,14 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:launchMode= "singleTask"/>
-        <activity android:name=".HelpActivity"
+        <activity android:name=".activities.HelpActivity"
             android:launchMode= "singleTask"/>
-        <activity android:name=".AboutActivity"
+        <activity android:name=".activities.AboutActivity"
             android:launchMode= "singleTask"/>
         <activity
-            android:name=".LauncherActivity"
+            android:name=".activities.LauncherActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar"
             android:noHistory="true"
             >

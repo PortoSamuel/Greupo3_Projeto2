@@ -1,9 +1,11 @@
-package br.edu.insper.truckpad_insper;
+package br.edu.insper.truckpad_insper.activities;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.edu.insper.truckpad_insper.R;
 
 public class LauncherActivity extends AppCompatActivity {
 
