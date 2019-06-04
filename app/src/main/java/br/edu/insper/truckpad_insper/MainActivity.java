@@ -304,32 +304,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             textReturnResultNumber.setText("R$ " + getResult());
             relativeMap.setVisibility(View.VISIBLE);
 
-            try{
-                //Map
-                setRouteCoords(route);
-                LatLng originLatLng = new LatLng(routeCoords.get(0).latitude, routeCoords.get(0).longitude);
-                LatLng destinyLatLng = new LatLng(routeCoords.get(routeCoords.size()-1).latitude, routeCoords.get(routeCoords.size()-1).longitude);
-                map.addMarker(new MarkerOptions().position(originLatLng).title("Origem"));
-                map.addMarker(new MarkerOptions().position(destinyLatLng).title("Destino"));
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                builder.include(originLatLng);
-                builder.include(destinyLatLng);
-                LatLngBounds bounds =  builder.build();
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150);
-                map.animateCamera(cameraUpdate);
-                System.out.println("AAA");
+            setupMap();
 
-                //Polyline
-                PolylineOptions polylineOptions = new PolylineOptions();
-                polylineOptions.addAll(routeCoords);
-                polylineOptions.width(5);
-                polylineOptions.color(Color.RED);
-                polylineOptions.clickable(true);
-                map.addPolyline(polylineOptions);
-
-            } catch(Exception e){
-                ;
-            }
 
 
 
@@ -347,6 +323,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void setupMap(){
+        try{
+            //Map
+            setRouteCoords(route);
+            LatLng originLatLng = new LatLng(routeCoords.get(0).latitude, routeCoords.get(0).longitude);
+            LatLng destinyLatLng = new LatLng(routeCoords.get(routeCoords.size()-1).latitude, routeCoords.get(routeCoords.size()-1).longitude);
+            map.addMarker(new MarkerOptions().position(originLatLng).title("Origem"));
+            map.addMarker(new MarkerOptions().position(destinyLatLng).title("Destino"));
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(originLatLng);
+            builder.include(destinyLatLng);
+            LatLngBounds bounds =  builder.build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150);
+            map.animateCamera(cameraUpdate);
+            System.out.println("AAA");
+
+            //Polyline
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.addAll(routeCoords);
+            polylineOptions.width(5);
+            polylineOptions.color(Color.RED);
+            polylineOptions.clickable(true);
+            map.addPolyline(polylineOptions);
+
+        } catch(Exception e){
+
+        }
+    }
     public void setOnResponsePrice(double price, double dist) {
         this.result = String.valueOf(price);
         this.distance = String.valueOf(dist);
