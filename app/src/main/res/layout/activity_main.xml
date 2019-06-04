@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="Valide o valor do seu frete:"
                 android:textColor="@color/cardview_dark_background"
-                android:layout_marginTop="30sp"
+                android:layout_marginTop="20sp"
                 android:textSize="20sp"/>
 
             <TextView
@@ -111,7 +111,7 @@
                 android:layout_below="@id/editTextOrigin"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="32sp"
-                android:layout_marginRight="20sp"
+                android:layout_marginRight="40sp"
                 android:singleLine="true"
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
             <Button
                 android:id="@+id/buttonValidate"
                 android:layout_below="@id/textDestiny"
-                android:layout_marginTop="90sp"
+                android:layout_marginTop="50sp"
                 android:layout_centerHorizontal="true"
                 android:text="Validar"
                 android:background="@color/colorSideBar"

@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 setOriginPerformed(true);
 
             }if(hasFocus){ try{
+                setStateBottomSheet(5);
                 client.deleteOrigin();
                 client.setOriginOnResponse(false);
             }catch (Exception e){ } }
