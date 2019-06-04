@@ -1,15 +1,12 @@
 package br.edu.insper.truckpad_insper;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,27 +14,22 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,11 +38,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -175,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 setDestinyPerformed(true);
 
             }if(hasFocus){ try{
+                setStateBottomSheet(5);
                 client.deleteDestiny();
                 client.setDestinyOnResponse(false);
             }catch (Exception e){ } }
@@ -214,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     } catch(Exception e){ }
                 }, 1200);
             }
-
             @Override
             public void afterTextChanged(Editable editable) { }
         });
@@ -235,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     } catch(Exception e){ }
                 }, 1200);
             }
-
             @Override
             public void afterTextChanged(Editable editable) { }
         });
@@ -293,19 +281,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             //result
             textResult.setVisibility(View.VISIBLE);
             textResult.setText("Valor sem retorno:");
-
             textResultReturn.setVisibility(View.VISIBLE);
             textResultReturn.setText("Valor com retorno:");
-
             textResultNumber.setVisibility(View.VISIBLE);
             textResultNumber.setText(("R$ " + getResult()).replace('.', ','));
-
             textReturnResultNumber.setVisibility(View.VISIBLE);
-          
             relativeMap.setVisibility(View.VISIBLE);
-
             setupMap();
             textReturnResultNumber.setText(("R$ " + getResult2()).replace('.', ','));
+
         }else{
 
             pBar.setVisibility(View.VISIBLE);
@@ -354,11 +338,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             polylineOptions.clickable(true);
             map.addPolyline(polylineOptions);
 
-        } catch(Exception e){
-
-        }
+        } catch(Exception e){ }
     }
-
 
     public void setOnResponsePrice(double price, double dist, float fuel, float tool, double price2) {
 
@@ -443,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void setRouteCoords(List<List<List<Double>>> list){
-        routeCoords = new ArrayList<LatLng>();
+        routeCoords = new ArrayList<>();
         for(int i = 0; i < route.get(0).size(); i++){
             routeCoords.add(new LatLng(list.get(0).get(i).get(1), list.get(0).get(i).get(0)));
 

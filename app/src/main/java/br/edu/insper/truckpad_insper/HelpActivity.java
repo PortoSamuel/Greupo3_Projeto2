@@ -42,7 +42,6 @@ public class HelpActivity extends AppCompatActivity {
                 case 2:
                     startActivity(new Intent(HelpActivity.this, AboutActivity.class));
                     break;
-
             }
         });
     }
