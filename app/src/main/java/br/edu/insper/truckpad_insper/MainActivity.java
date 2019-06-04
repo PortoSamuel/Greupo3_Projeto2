@@ -113,42 +113,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        textOrigin.setOnClickListener((view) -> {
-            if(getOrigin().length() != 0){
+        textOrigin.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                // code to execute when EditText loses focus
                 client.setOriginCompleted(true);
                 client.getAddress(getOrigin());
-                textDestiny.requestFocus();
                 setOriginPerformed(true);
 
-            }else{showToast("O endereço de origem não pode ser vazio");}   
-            
+            }if(hasFocus){ try{
+                client.deleteOrigin();
+                client.setOriginOnResponse(false);
+            }catch (Exception e){ } }
         });
 
-        textDestiny.setOnClickListener((view) -> {
-            if(getDestiny().length() != 0){
+        textDestiny.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                // code to execute when EditText loses focus
                 client.setDestinyCompleted(true);
                 client.getAddress(getDestiny());
-                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 setDestinyPerformed(true);
-            }else{showToast("O endereço de destino não pode ser vazio");}
 
+            }if(hasFocus){ try{
+                client.deleteDestiny();
+                client.setDestinyOnResponse(false);
+            }catch (Exception e){ } }
         });
 
         validateButton.setOnClickListener((view) -> {
             if(getDestiny().length() != 0 && getOrigin().length() != 0) {
-                client.setAxisNumber(getAxleNumbers());
-                client.setLoadType(getTruckLoad());
-                client.postAddress();
-                setStateBottomSheet(3);
-                setAllState("none");
-            }else{ showToast("Preencha todos os campos"); }
+                textOrigin.clearFocus();
+                textDestiny.clearFocus();
+            }else{ if(getDestiny().length() == 0 && getOrigin().length() == 0) { showToast("Preencha todos os campos"); } }
         });
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            }
+            public void onStateChanged(@NonNull View bottomSheet, int newState) { }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
@@ -159,63 +159,44 @@ public class MainActivity extends AppCompatActivity {
 
         textOrigin.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                setupAutoCompleteOrigin();
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { setupAutoCompleteOrigin(); }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 setOriginPerformed(false);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        client.setOriginPlaced(true);
-                        String text = textOrigin.getText().toString();
-                        try {
-                            client.getAddress(text);
-                            setupAutoCompleteOrigin();
-                        } catch(Exception e){
-
-                        }
-                    }
+                handler.postDelayed(() -> {
+                    client.setOriginPlaced(true);
+                    String text = textOrigin.getText().toString();
+                    try {
+                        client.getAddress(text);
+                        setupAutoCompleteOrigin();
+                    } catch(Exception e){ }
                 }, 1200);
-
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-
-            }
+            public void afterTextChanged(Editable editable) { }
         });
 
         textDestiny.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                setupAutoCompleteDestiny();
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { setupAutoCompleteDestiny(); }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 setDestinyPerformed(false);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        client.setDestinyPlaced(true);
-                        String text = textDestiny.getText().toString();
-                        try {
-                            client.getAddress(text);
-                            setupAutoCompleteDestiny();
-                        } catch(Exception e){ }
-                    }
+                handler.postDelayed(() -> {
+                    client.setDestinyPlaced(true);
+                    String text = textDestiny.getText().toString();
+                    try {
+                        client.getAddress(text);
+                        setupAutoCompleteDestiny();
+                    } catch(Exception e){ }
                 }, 1200);
-
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) { }
         });
     }
 
@@ -283,14 +264,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         }else{
+
             pBar.setVisibility(View.VISIBLE);
             loadingTxt.setVisibility(View.VISIBLE);
 
             textDistance.setVisibility(View.GONE);
             textValueIntro.setVisibility(View.GONE);
-            textResult.setVisibility(View.GONE);
-        }
+            textResultDistance.setVisibility(View.GONE);
 
+            textResultToll.setVisibility(View.GONE);
+            textToll.setVisibility(View.GONE);
+            textGas.setVisibility(View.GONE);
+            textResultGas.setVisibility(View.GONE);
+            textResult.setVisibility(View.GONE);
+            textResultReturn.setVisibility(View.GONE);
+            textResultNumber.setVisibility(View.GONE);
+            textReturnResultNumber.setVisibility(View.GONE);
+        }
     }
 
     public void setOnResponsePrice(double price, double dist, float fuel, float tool, double price2) {
@@ -307,11 +297,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             arrayAdapterOrigin = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, client.getOriginPlaces());
             textOrigin.setAdapter(arrayAdapterOrigin);
-            if(!originPerformed){
-                textOrigin.showDropDown();
-            }
-
-
+            if(!originPerformed){ textOrigin.showDropDown(); }
         } catch(Exception e){ }
     }
 
@@ -319,9 +305,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             arrayAdapterDestiny = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, client.getDestinyPlaces());
             textDestiny.setAdapter(arrayAdapterDestiny);
-            if(!destinyPerformed){
-                textDestiny.showDropDown();
-            }
+            if(!destinyPerformed){ textDestiny.showDropDown(); }
         } catch(Exception e){ }
     }
 
