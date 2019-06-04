@@ -126,6 +126,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(toolbar);
         setupSpinners();
 
+
+        textOrigin.setOnClickListener((view) -> {
+            textDestiny.requestFocus();
+            textOrigin.dismissDropDown();
+        });
+
+        textDestiny.setOnClickListener((view) -> {
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            textDestiny.dismissDropDown();
+        });
+
+
         sideBarListView.setOnItemClickListener((parent, view, position ,id) ->{
             switch (position){
                 case 0:
@@ -148,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 setOriginPerformed(true);
 
             }if(hasFocus){ try{
+                setStateBottomSheet(5);
                 client.deleteOrigin();
                 client.setOriginOnResponse(false);
             }catch (Exception e){ } }
@@ -260,21 +274,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             textDistance.setText("     Distância:");
 
             textResultDistance.setVisibility(View.VISIBLE);
-            textResultDistance.setText(getDistance() + " km");
+            textResultDistance.setText((getDistance() + " km").replace('.', ','));
 
             //gas
             textGas.setVisibility(View.VISIBLE);
             textGas.setText("     Combustível");
 
             textResultGas.setVisibility(View.VISIBLE);
-            textResultGas.setText("R$ " + getFuel());
+            textResultGas.setText(("R$ " + getFuel()).replace('.', ','));
 
             //toll
             textToll.setVisibility(View.VISIBLE);
             textToll.setText("     Pedagio:");
 
             textResultToll.setVisibility(View.VISIBLE);
-            textResultToll.setText("R$ " + getTool() );
+            textResultToll.setText(("R$ " + getTool()).replace('.', ','));
 
             //result
             textResult.setVisibility(View.VISIBLE);
@@ -284,21 +298,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             textResultReturn.setText("Valor com retorno:");
 
             textResultNumber.setVisibility(View.VISIBLE);
-            textResultNumber.setText("R$ " + getResult());
+            textResultNumber.setText(("R$ " + getResult()).replace('.', ','));
 
             textReturnResultNumber.setVisibility(View.VISIBLE);
           
             relativeMap.setVisibility(View.VISIBLE);
 
             setupMap();
-
-
-
-
-            textReturnResultNumber.setText("R$ " + getResult2());
-
-
-
+            textReturnResultNumber.setText(("R$ " + getResult2()).replace('.', ','));
         }else{
 
             pBar.setVisibility(View.VISIBLE);
@@ -319,13 +326,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             textReturnResultNumber.setVisibility(View.GONE);
           
             relativeMap.setVisibility(View.GONE);
-
         }
     }
 
     public void setupMap(){
         try{
             //Map
+            map.clear();
             setRouteCoords(route);
             LatLng originLatLng = new LatLng(routeCoords.get(0).latitude, routeCoords.get(0).longitude);
             LatLng destinyLatLng = new LatLng(routeCoords.get(routeCoords.size()-1).latitude, routeCoords.get(routeCoords.size()-1).longitude);
