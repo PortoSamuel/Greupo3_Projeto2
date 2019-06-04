@@ -9,6 +9,12 @@ public class GeoCodingPayload {
     private float fuel_consumption;
     private float fuel_price;
 
+    public void setVehicle_type(int type){this.vehicle_type = type;}
+
+    public void setFuel_consumption(float consumption){this.fuel_consumption = consumption;}
+
+    public void setFuel_price(float price){this.fuel_price = price;}
+
     public void putPlaceOrigin(GeoPlace place){
             this.places.add(place);
             System.out.println(places);

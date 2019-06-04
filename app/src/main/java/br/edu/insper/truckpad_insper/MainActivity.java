@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private AutoCompleteTextView textOrigin, textDestiny;
     private Button validateButton;
     private Client client;
-    private String result, distance;
+    private String result, distance, fuel, tool, result2;
     private static TextView textResult, textValueIntro, textDistance, loadingTxt, textResultReturn, textResultNumber, textReturnResultNumber, textResultDistance, textGas, textResultGas, textToll, textResultToll;
     private View bottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -256,6 +256,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public int getAxleNumbers() { return Integer.parseInt(spinnerAxleNumbers.getSelectedItem().toString()); }
 
+    public String getFuel(){return fuel;}
+
+    public String getTool(){return tool;}
+
+    public String getResult2(){return result2;}
 
     public String getDistance() { return distance; }
 
@@ -281,14 +286,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             textGas.setText("     Combustível");
 
             textResultGas.setVisibility(View.VISIBLE);
-            textResultGas.setText("R$ 00,00");
+            textResultGas.setText("R$ " + getFuel());
 
             //toll
             textToll.setVisibility(View.VISIBLE);
             textToll.setText("     Pedagio:");
 
             textResultToll.setVisibility(View.VISIBLE);
-            textResultToll.setText("R$ 00,00");
+            textResultToll.setText("R$ " + getTool() );
 
             //result
             textResult.setVisibility(View.VISIBLE);
@@ -301,13 +306,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             textResultNumber.setText("R$ " + getResult());
 
             textReturnResultNumber.setVisibility(View.VISIBLE);
-            textReturnResultNumber.setText("R$ " + getResult());
+          
             relativeMap.setVisibility(View.VISIBLE);
 
             setupMap();
 
 
 
+
+            textReturnResultNumber.setText("R$ " + getResult2());
 
 
 
@@ -351,9 +358,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
     }
-    public void setOnResponsePrice(double price, double dist) {
+
+
+    public void setOnResponsePrice(double price, double dist, float fuel, float tool, double price2) {
+
         this.result = String.valueOf(price);
         this.distance = String.valueOf(dist);
+        this.fuel = String.valueOf(fuel);
+        this.tool = String.valueOf(tool);
+        this.result2 = String.valueOf(price2);
     }
 
     public void setStateBottomSheet(int state){ bottomSheetBehavior.setState(state); }
