@@ -33,6 +33,6 @@
     <string-array name="returnLoad">
         <item>Não</item>
         <item>Sim</item>
-
     </string-array>
+    <string name="google_maps_key"></string>
 </resources>

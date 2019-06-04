@@ -9,12 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
         <activity android:name=".MainActivity"
             android:launchMode= "singleTask"/>
         <activity android:name=".HelpActivity"
             android:launchMode= "singleTask"/>
         <activity android:name=".AboutActivity"
             android:launchMode= "singleTask"/>
+        <activity android:name=".MapActivity"
+            android:exported="true"/>
         <activity
             android:name=".LauncherActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar"
