@@ -1,12 +1,15 @@
 package br.edu.insper.truckpad_insper;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,16 +30,32 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ArrayAdapter<String> arrayAdapter, arrayAdapterOrigin, arrayAdapterDestiny;
     private ListView sideBarListView;
@@ -52,11 +71,18 @@ public class MainActivity extends AppCompatActivity {
     private BottomSheetBehavior bottomSheetBehavior;
     private static ProgressBar pBar;
     private boolean originPerformed, destinyPerformed;
+    private GoogleMap map;
+    private List<List<List<Double>>> route;
+    private ArrayList<LatLng> routeCoords;
+    private RelativeLayout relativeMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         sideBarListView = findViewById(R.id.sideBarList);
         toolbar = findViewById(R.id.toolbar);
@@ -83,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         pBar = findViewById(R.id.pBar);
         textValueIntro = findViewById(R.id.textIntroduction);
         loadingTxt = findViewById(R.id.loadingTxt);
+        relativeMap = findViewById(R.id.relativeMap);
 
         ViewGroup.LayoutParams childLayoutParams = bottomSheet.getLayoutParams();
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -279,7 +306,16 @@ public class MainActivity extends AppCompatActivity {
             textResultNumber.setText("R$ " + getResult());
 
             textReturnResultNumber.setVisibility(View.VISIBLE);
+          
+            relativeMap.setVisibility(View.VISIBLE);
+
+            setupMap();
+
+
+
+
             textReturnResultNumber.setText("R$ " + getResult2());
+
 
 
         }else{
@@ -289,11 +325,43 @@ public class MainActivity extends AppCompatActivity {
             textDistance.setVisibility(View.GONE);
             textValueIntro.setVisibility(View.GONE);
             textResult.setVisibility(View.GONE);
+            relativeMap.setVisibility(View.GONE);
         }
 
     }
 
+    public void setupMap(){
+        try{
+            //Map
+            setRouteCoords(route);
+            LatLng originLatLng = new LatLng(routeCoords.get(0).latitude, routeCoords.get(0).longitude);
+            LatLng destinyLatLng = new LatLng(routeCoords.get(routeCoords.size()-1).latitude, routeCoords.get(routeCoords.size()-1).longitude);
+            map.addMarker(new MarkerOptions().position(originLatLng).title("Origem"));
+            map.addMarker(new MarkerOptions().position(destinyLatLng).title("Destino"));
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(originLatLng);
+            builder.include(destinyLatLng);
+            LatLngBounds bounds =  builder.build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150);
+            map.animateCamera(cameraUpdate);
+            System.out.println("AAA");
+
+            //Polyline
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.addAll(routeCoords);
+            polylineOptions.width(5);
+            polylineOptions.color(Color.RED);
+            polylineOptions.clickable(true);
+            map.addPolyline(polylineOptions);
+
+        } catch(Exception e){
+
+        }
+    }
+
+
     public void setOnResponsePrice(double price, double dist, float fuel, float tool, double price2) {
+
         this.result = String.valueOf(price);
         this.distance = String.valueOf(dist);
         this.fuel = String.valueOf(fuel);
@@ -369,4 +437,22 @@ public class MainActivity extends AppCompatActivity {
     public void setOriginPerformed(boolean b){ this.originPerformed = b; }
 
     public void setDestinyPerformed(boolean b){ this.destinyPerformed = b; }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+    }
+
+
+    public void setRoute(List<List<List<Double>>> list){
+        this.route = list;
+    }
+
+    public void setRouteCoords(List<List<List<Double>>> list){
+        routeCoords = new ArrayList<LatLng>();
+        for(int i = 0; i < route.get(0).size(); i++){
+            routeCoords.add(new LatLng(list.get(0).get(i).get(1), list.get(0).get(i).get(0)));
+
+        }
+    }
 }

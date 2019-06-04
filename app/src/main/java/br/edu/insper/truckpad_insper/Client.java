@@ -92,10 +92,11 @@ public class Client extends AppCompatActivity {
         @Override
         public void onResponse(Call<GeoRouteReceived> call, Response<GeoRouteReceived> response) {
             routeReceived = response.body();
+          
+            main.setRoute(routeReceived.getRoute());
 
             PriceClient client = ServiceGenerator.createService(PriceClient.class);
             PriceInformation priceInformation = new PriceInformation(getAxisNumber(), routeReceived.getDistance()/1000, true, getLoadType().replace("carga ", ""));
-
             Call<Price> callprice = client.calculatePrice(priceInformation);
 
             callprice.enqueue(new Callback<Price>() {
