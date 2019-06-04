@@ -24,7 +24,7 @@ public class Client extends AppCompatActivity {
     private GeoCodingPayload payload = new GeoCodingPayload();
     private GeoRouteReceived routeReceived;
     private int axisNumber;
-    private boolean originPlaced, destinyPlaced, originCompleted, destinyCompleted;
+    private boolean originPlaced, destinyPlaced, originCompleted, destinyCompleted, isDestinyOnResponse, isOriginOnResponse;
     private String loadType;
     private String[] originPlaces, destinyPlaces;
     private Retrofit retrofit = builder.build();
@@ -61,15 +61,31 @@ public class Client extends AppCompatActivity {
                     try{
                         assert codeReceived != null;
                         payload.putPlaceDestiny(codeReceived.getPlaces().get(0));
+                        setDestinyOnResponse(true);
                         setDestinyCompleted(false);
-                    }catch (Exception e){ main.showToast("O destino não existe"); }
+                    }catch (Exception e){
+                        main.showToast("O destino não existe");
+                        setDestinyOnResponse(false);
+                    }
                 }
                 if(originCompleted){
                     try{
                         assert codeReceived != null;
                         payload.putPlaceOrigin(codeReceived.getPlaces().get(0));
+                        setOriginOnResponse(true);
                         setOriginCompleted(false);
-                    }catch (Exception e){ main.showToast("A origem não existe"); }
+                    }catch (Exception e){
+                        main.showToast("A origem não existe");
+                        setOriginOnResponse(false);
+                    }
+                }
+
+                if(isDestinyOnResponse && isOriginOnResponse){
+                    setAxisNumber(main.getAxleNumbers());
+                    setLoadType(main.getTruckLoad());
+                    postAddress();
+                    main.setStateBottomSheet(3);
+                    main.setAllState("none");
                 }
             }
             @Override
@@ -78,8 +94,8 @@ public class Client extends AppCompatActivity {
     }
 
     public void postAddress(){
-        System.out.println(payload.getPlaces().get(0).getDisplay_name());
-        System.out.println(payload.getPlaces().get(1).getDisplay_name());
+        System.out.println("Origem: " + payload.getPlaces().get(0).getDisplay_name());
+        System.out.println("Destino: " + payload.getPlaces().get(1).getDisplay_name());
 
         payload.setVehicle_type(1);
         payload.setFuel_consumption(5);
@@ -104,7 +120,6 @@ public class Client extends AppCompatActivity {
                 public void onResponse(Call<Price> call, Response<Price> response){
                     double result = Objects.requireNonNull(response.body()).getShipmentValue();
                     double result2 = result/2;
-
                     main.setOnResponsePrice(result, priceInformation.getDistance(), routeReceived.getFuel_cost(), routeReceived.getToll_cost(),result2);
                     main.setAllState("showResult");
                 }
@@ -119,19 +134,29 @@ public class Client extends AppCompatActivity {
         });
     }
 
-    public int getAxisNumber() { return axisNumber; }
+    public void deleteOrigin(){ payload.deletePlaceOrigin(); }
 
+    public void deleteDestiny(){ payload.deletePlaceDestiny(); }
+
+    public int getAxisNumber() { return axisNumber; }
 
     public String getLoadType() { return loadType; }
 
     public void setAxisNumber(int axisNumber) { this.axisNumber = axisNumber; }
-
 
     public void setLoadType(String loadType) { this.loadType = loadType; }
 
     public String[] getOriginPlaces(){ return originPlaces; }
 
     public String[] getDestinyPlaces(){ return destinyPlaces; }
+
+    public boolean isDestinyOnResponse() { return isDestinyOnResponse; }
+
+    public void setDestinyOnResponse(boolean destinyOnResponse) { isDestinyOnResponse = destinyOnResponse; }
+
+    public boolean isOriginOnResponse() { return isOriginOnResponse; }
+
+    public void setOriginOnResponse(boolean originOnResponse) { isOriginOnResponse = originOnResponse; }
 
     public void setOriginPlaced(boolean b){ this.originPlaced = b; }
 
