@@ -1,13 +1,7 @@
 package br.edu.insper.truckpad_insper;
 
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,7 +74,7 @@ public class Client extends AppCompatActivity {
                     }
                 }
 
-                if(isDestinyOnResponse && isOriginOnResponse){
+                if(isDestinyOnResponse() && isOriginOnResponse()){
                     setAxisNumber(main.getAxleNumbers());
                     setLoadType(main.getTruckLoad());
                     postAddress();
@@ -94,9 +88,6 @@ public class Client extends AppCompatActivity {
     }
 
     public void postAddress(){
-        System.out.println("Origem: " + payload.getPlaces().get(0).getDisplay_name());
-        System.out.println("Destino: " + payload.getPlaces().get(1).getDisplay_name());
-
         payload.setVehicle_type(1);
         payload.setFuel_consumption(5);
         payload.setFuel_price((float) 3.654);
